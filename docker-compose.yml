@@ -1,0 +1,40 @@
+version: "3.9"
+services:
+  postgres_dev:
+    image: postgres:11
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB_PORT=${postgres_dev_port}
+      - POSTGRES_DB_HOST=${postgres_dev_host}
+      - POSTGRES_USER=${postgres_dev_user}
+      - POSTGRES_PASSWORD=${postgres_dev_passwd}
+      - POSTGRES_DB=${postgres_dev_db}
+    volumes:
+      - ./postgres-data/dev:/var/lib/postgresql/data
+  postgres_prod:
+    image: postgres:11
+    container_name: postgres
+    ports:
+      - "5433:5433"
+    environment:
+      - POSTGRES_DB_PORT=${postgres_prod_port}
+      - POSTGRES_DB_HOST=${postgres_prod_host}
+      - POSTGRES_USER=${postgres_prod_user}
+      - POSTGRES_PASSWORD=${postgres_prod_passwd}
+      - POSTGRES_DB=${postgres_prod_db}
+    volumes:
+      - ./postgres-data/prod:/var/lib/postgresql/data
+  nginx_prod:
+    image: nginx
+    ports:
+        - 8000:80
+    volumes:
+        - ./deploy/prod:/usr/share/nginx/html
+  nginx_dev:
+    image: nginx
+    ports:
+        - 8000:90
+    volumes:
+        - ./deploy/dev:/usr/share/nginx/html
